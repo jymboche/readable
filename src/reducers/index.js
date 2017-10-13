@@ -46,7 +46,7 @@ function defaultReducer(state = defaultState, action) {
             return {
                 ...state,
                 posts: state.posts.map(post => post.id === action.post.id? action.post : post),
-                post: state.post? action.post : null
+                activePost: state.activePost? action.post : null
             };
         case RECEIVE_SINGLE_POST:
             return {
