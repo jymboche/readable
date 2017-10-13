@@ -1,0 +1,17 @@
+#root .postSegment .column.left,
+#root .commentSegment .column.left {
+  flex: 0 0 70px;
+}
+#root .postSegment .right,
+#root .commentSegment .right {
+  flex: 1;
+}
+#root .postSegment .item,
+#root .commentSegment .item {
+  margin: 0;
+}
+.postRating .score {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
