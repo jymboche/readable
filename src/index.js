@@ -38,7 +38,7 @@ ReactDOM.render(
             <Route path="/" component={App}>
                 <IndexRoute component={PostList} />
                 <Route path="/:category/posts" component={PostList}/>
-                <Route path="/posts/:id" component={SinglePost} />
+                <Route path="/:category/:id" component={SinglePost} />
             </Route>
         </Router>
     </Provider>,

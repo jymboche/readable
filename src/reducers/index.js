@@ -1,8 +1,8 @@
 import {
     RECEIVE_CATEGORIES, RECEIVE_POSTS, RECEIVE_NEW_POST, CHANGE_CATEGORY, POST_VOTE,
     RECEIVE_SINGLE_POST, RECEIVE_COMMENTS, RECEIVE_COMMENT, RECEIVE_NEW_COMMENT, OPEN_COMMENT_MODAL, OPEN_POST_MODAL,
-    CLOSE_POST_MODAL, CLOSE_COMMENT_MODAL
-} from '../actions/index';
+    CLOSE_POST_MODAL, CLOSE_COMMENT_MODAL, RECEIVE_POST_COMMENTS, DELETE_POST
+} from '../actions/types';
 
 const defaultState = {
     categories: [],
@@ -14,7 +14,8 @@ const defaultState = {
     postModalOpen: false,
     postModalEditing: false,
     activeComment: null,
-    editingPost: null
+    editingPost: null,
+    numberPostComments: {}
 };
 
 function defaultReducer(state = defaultState, action) {
@@ -31,9 +32,13 @@ function defaultReducer(state = defaultState, action) {
                 posts: action.posts
             };
         case RECEIVE_NEW_POST:
+
+            let posts = state.posts.filter(post => (post.id !== action.post.id));
+            posts.push(action.post);
+
             return {
                 ...state,
-                posts: [...state.posts, action.post],
+                posts,
                 postModalOpen: false,
                 activePost: action.post
             };
@@ -113,6 +118,18 @@ function defaultReducer(state = defaultState, action) {
                 ...state,
                 postModalOpen: false,
                 editingPost: null
+            };
+        case DELETE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(post => post.id !== action.postId)
+            };
+        case RECEIVE_POST_COMMENTS:
+            let obj = {};
+            obj[action.postId] = action.comments.length;
+            return {
+                ...state,
+                numberPostComments: {...state.numberPostComments, ...obj}
             };
         default :
             return state;

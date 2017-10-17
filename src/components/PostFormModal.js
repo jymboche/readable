@@ -46,12 +46,17 @@ class PostFormModal extends Component {
                                     <Form.Input placeholder='Title' value={this.state.title} onChange={this.handleTitleChange}/>
                                 </Form.Field>
                                 <Form.Field>
-                                    <Form.Input placeholder='Username' value={this.state.author} onChange={this.handleAuthorChange} />
+                                    <Form.Input
+                                        placeholder='Username'
+                                        value={this.state.author}
+                                        onChange={this.handleAuthorChange}
+                                        disabled={!!this.state.id} />
                                 </Form.Field>
                                 <Form.Select
                                     selection
                                     options={categories}
                                     placeholder='Select Category'
+                                    disabled={!!this.state.id}
                                     value={this.state.category}
                                     onChange={this.handleCategoryChange}/>
                                 <Form.Field>

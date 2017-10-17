@@ -47,7 +47,6 @@ class Navbar extends Component {
             as: Link,
             to: (c.path === "All Posts")? "/" : `/${c.path}/posts`,
             onClick: this.handleCategoryChange,
-            disabled: this.state.selectedCategory === c.path,
             selected: false
         }));
 

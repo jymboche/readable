@@ -20,7 +20,7 @@ class PostList extends Component {
 
     constructor(props) {
         super(props);
-        this.setState({selectedCategory: this.getCategory(props)});
+        this.state.selectedCategory = this.getCategory(props);
     }
 
     componentWillReceiveProps(props) {

@@ -4,26 +4,13 @@ import {connect} from 'react-redux';
 import {fetchSinglePost, handleDeletePost, handlePostVote, openPostModal} from '../actions/index';
 import CommentList from './CommentList';
 import PostRating from './PostRating';
-import PostFormModal from './PostFormModal';
+import PostControls from './PostControls';
 
 class SinglePost extends Component {
-
-    state = {
-        deleteConfirmOpen: false
-    };
 
     componentDidMount() {
         this.props.fetchSinglePost(this.props.params.id);
     }
-
-    showDeleteConfirm = () => this.setState({deleteConfirmOpen: true});
-
-    handleDeleteCancel = () => this.setState({deleteConfirmOpen: false});
-
-    handleDeleteConfirm = () => {
-        this.props.deletePost(this.props.post.id);
-        this.setState({deleteConfirmOpen: false});
-    };
 
     render() {
 
@@ -62,16 +49,7 @@ class SinglePost extends Component {
                                     </Grid.Column>
 
                                     <Grid.Column width={2} textAlign='right'>
-                                        <Button.Group size='tiny'>
-                                            <Button onClick={this.editPost}>edit</Button>
-                                            <Button.Or />
-                                            <Button negative onClick={this.showDeleteConfirm}>delete</Button>
-                                            <Confirm
-                                                open={this.state.deleteConfirmOpen}
-                                                onCancel={this.handleDeleteCancel}
-                                                onConfirm={this.handleDeleteConfirm} />
-                                        </Button.Group>
-                                        <PostFormModal />
+                                        <PostControls post={post} />
                                     </Grid.Column>
 
                                 </Grid.Row>
@@ -112,11 +90,6 @@ class SinglePost extends Component {
     handleVoteChange = option => {
         this.props.postVote(this.props.post.id, option);
     };
-
-    editPost = () => {
-        this.props.openPostModal(this.props.post.id);
-    }
-
 
 }
 

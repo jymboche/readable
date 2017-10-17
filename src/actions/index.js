@@ -7,21 +7,14 @@ import {
     requestSinglePost, requestUpdateComment, requestUpdatePost
 } from '../utils/api';
 
-export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES';
-export const RECEIVE_POSTS = 'RECEIVE_POSTS';
-export const RECEIVE_NEW_POST = 'RECEIVE_NEW_POST';
-export const CHANGE_CATEGORY = 'CHANGE_CATEGORY';
-export const POST_VOTE = "POST_VOTE";
-export const RECEIVE_SINGLE_POST = "RECEIVE_SINGLE_POST";
-export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
-export const RECEIVE_COMMENT = "RECEIVE_COMMENT";
-export const RECEIVE_NEW_COMMENT = "RECEIVE_NEW_COMMENT";
+import {
+    CHANGE_CATEGORY, CLOSE_COMMENT_MODAL, CLOSE_POST_MODAL, DELETE_POST, OPEN_COMMENT_MODAL, OPEN_POST_MODAL, POST_VOTE,
+    RECEIVE_CATEGORIES, RECEIVE_COMMENT, RECEIVE_COMMENTS, RECEIVE_NEW_COMMENT, RECEIVE_NEW_POST, RECEIVE_POST_COMMENTS,
+    RECEIVE_POSTS,
+    RECEIVE_SINGLE_POST
+} from './types';
 
-export const OPEN_COMMENT_MODAL = "OPEN_COMMENT_MODAL";
-export const CLOSE_COMMENT_MODAL = "CLOSE_COMMENT_MODAL";
 
-export const OPEN_POST_MODAL = "OPEN_POST_MODAL";
-export const CLOSE_POST_MODAL = "CLOSE_POST_MODAL";
 
 const receiveCategories = categories => ({
     type: RECEIVE_CATEGORIES,
@@ -53,8 +46,19 @@ const receiveSinglePost = post => ({
     post
 });
 
+const deletePost = postId => ({
+    type: DELETE_POST,
+    postId
+});
+
 const receiveComments = comments => ({
     type: RECEIVE_COMMENTS,
+    comments
+});
+
+const receivePostComments = (postId, comments) => ({
+    type: RECEIVE_POST_COMMENTS,
+    postId,
     comments
 });
 
@@ -186,6 +190,18 @@ export const fetchComments = postId => dispatch =>
         .then( res => res.json() )
         .then( comments => dispatch(receiveComments(comments)) );
 
+export const fetchPostComments = postId => dispatch =>
+    requestComments(postId)
+        .then(res=>{
+            if (!res.ok) {
+                throw Error(res.statusText);
+            }
+
+            return res;
+        })
+        .then( res => res.json() )
+        .then( comments => dispatch(receivePostComments(postId, comments)) );
+
 export const handleCommentVote = (commentId, option) => dispatch =>
     requestCommentVote(commentId, option)
         .then( res => {
@@ -234,7 +250,8 @@ export const handleDeletePost = postId => dispatch =>
             return res;
         })
         .then( res => res.json() )
-        .then( () => dispatch(push("/")) );
+        .then( () => dispatch(push("/")) )
+        .then( () => dispatch(deletePost(postId)));
 
 export const handleDeleteComment = (commentId, postId) => dispatch =>
     requestDeleteComment(commentId)
