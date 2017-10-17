@@ -39,15 +39,14 @@ class PostList extends Component {
     render() {
 
         // SORT THE POSTS BY COLUMN AND ORDER
-        const column = this.state.selectedFilter;
-        const order = this.state.sortOrder;
+        const {selectedFilter, sortOrder} = this.state;
         const posts = this.props.posts.sort( (a,b) => {
-            if (a[column] < b[column]) {
-                return order === 'descending'? 1 : -1;
+            if (a[selectedFilter] < b[selectedFilter]) {
+                return sortOrder === 'descending'? 1 : -1;
             }
 
-            if (a[column] > b[column]) {
-                return order === 'descending'? -1 : 1;
+            if (a[selectedFilter] > b[selectedFilter]) {
+                return sortOrder === 'descending'? -1 : 1;
             }
 
             return 0;
